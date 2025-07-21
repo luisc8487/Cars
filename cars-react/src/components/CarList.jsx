@@ -3,6 +3,9 @@ import {createSelector} from "@reduxjs/toolkit";
 import {removeCar} from "../store";
 
 const memoizedCars = createSelector(
+  // DECIDE IF THIS CAR SHOULD BE BOLD
+  // state.form.name
+
   // Updated version with the use of createSelector
   [(state) => state.cars.data, (state) => state.cars.searchTerm],
   (data, searchTerm) => {
@@ -23,14 +26,18 @@ function CarList() {
   // });
 
   const cars = useSelector(memoizedCars);
+  const name = useSelector((state) => state.form.name);
 
   const handleCarDelete = (car) => {
     dispatch(removeCar(car.id));
   };
 
   const renderedCars = cars.map((car) => {
+    // DECIDE IF THIS CAR SHOULD BE BOLD
+    const bold = name && car.name.toLowerCase().includes(name.toLowerCase());
+
     return (
-      <div key={car.id} className="panel">
+      <div key={car.id} className={`panel ${bold && "bold"}`}>
         <p>
           {car.name} - ${car.cost}
         </p>
